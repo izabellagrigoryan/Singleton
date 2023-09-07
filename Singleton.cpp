@@ -5,12 +5,13 @@
 class Singleton
 {
 private:
-    Singleton() { std::cout << "This is constructor" << std::endl; }
+    Singleton() { data++; std::cout << "This is constructor" << std::endl; }
     ~Singleton(){ std::cout << "This is destructor" << std::endl; }
     static Singleton* ptr;
-    int data;
+    int data = 5;
  public:
-    
+    Singleton(const Singleton& obj) = delete;
+
     static Singleton* create_single()
     {
         if (ptr == nullptr)
@@ -48,10 +49,16 @@ Singleton* Singleton::ptr = nullptr;
 int main()
 {
     Singleton* single = Singleton::create_single();
-    Singleton* single1 = Singleton::create_single();
+    Singleton* single1(single);
 
-    single->set_data(45);
-    int d = single->get_data();
+    int data1 = single1->get_data();
+    std::cout << data1 << std::endl;
+
+    int data = single->get_data();
+    std::cout << data << std::endl;
+
+    std::cout << single << std::endl << single1 << std::endl;
+
     Singleton::destroy_single();
     return 0;
 }
